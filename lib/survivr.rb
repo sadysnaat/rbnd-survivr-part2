@@ -1,3 +1,5 @@
+require "colorizr"
+require "terminal-table"
 require_relative "game"
 require_relative "tribe"
 require_relative "contestant"
@@ -5,59 +7,73 @@ require_relative "jury"
 
 #After your tests pass, uncomment this code below
 #=========================================================
-# # Create an array of twenty hopefuls to compete on the island of Borneo
-# @contestants = %w(carlos walter aparna trinh diego juliana poornima juha sofia julia fernando dena orit colt zhalisa farrin muhammed ari rasha gauri)
-# @contestants.map!{ |contestant| Contestant.new(contestant) }.shuffle!
-#
-# # Create two new tribes with names
-# @coyopa = Tribe.new(name: "Pagong", members: @contestants.shift(10))
-# @hunapu = Tribe.new(name: "Tagi", members: @contestants.shift(10))
-#
-# # Create a new game of Survivor
-# @borneo = Game.new(@coyopa, @hunapu)
+# Create an array of twenty hopefuls to compete on the island of Borneo
+@contestants = %w(carlos walter aparna trinh diego juliana poornima juha sofia julia fernando dena orit colt zhalisa farrin muhammed ari rasha gauri)
+@contestants.map!{ |contestant| Contestant.new(contestant) }.shuffle!
+
+puts "Welcome to Survivor".cyan
+puts "Teams for this game are...".cyan
+# Create two new tribes with names
+@coyopa = Tribe.new(name: "Pagong", members: @contestants.shift(10))
+@hunapu = Tribe.new(name: "Tagi", members: @contestants.shift(10))
+
+# Create a new game of Survivor
+@borneo = Game.new(@coyopa, @hunapu)
 #=========================================================
 
 
 #This is where you will write your code for the three phases
 def phase_one
-  eliminated = []
-  8.times do
-    losing_tribe = @borneo.tribes.sample
-    eliminated << losing_tribe.tribal_council
-  end
+  puts "Phase 1".light_blue
+  eliminated = play_challenges(number: 8, opponents: "tribes")
   return eliminated.size
 end
 
 def phase_two
-  eliminated = []
-  3.times do
-    immune = @merge_tribe.members.sample
-    eliminated << @merge_tribe.tribal_council(immune: immune)
-  end
+  puts "Phase 2".light_blue
+  eliminated = play_challenges(number: 3, opponents: "individuals")
   return eliminated.size
 end
 
 def phase_three
-  eliminated = []
-  7.times do
-    immune = @merge_tribe.members.sample
-    eliminated << @merge_tribe.tribal_council(immune: immune)
-  end
-  eliminated.each do
-    @jury.add_member(eliminated)
+  puts "Phase 3".light_blue
+  eliminated = play_challenges(number: 7, opponents: "individuals" )
+  eliminated.each do |e|
+    @jury.add_member(e)
   end
   return eliminated.size
 end
 
+def play_challenges(options={})
+  eliminated = []
+  options[:number].times do |i|
+    puts "Challenge #{i+1}"
+    if options[:opponents] == "tribes"
+      losing_tribe = @borneo.immunity_challenge#tribes.sample
+      puts "#{losing_tribe} has lost.".light_red
+      eliminated << losing_tribe.tribal_council
+      @borneo.print_tribes
+    elsif options[:opponents] == "individuals"
+      immune = @borneo.individual_immunity_challenge#@merge_tribe.members.sample
+      puts "#{immune.to_s.green} is immune for this round."
+      eliminated << @merge_tribe.tribal_council(immune: immune)
+      @merge_tribe.print_tribe
+    end
+  end
+  return eliminated
+end
 
 # If all the tests pass, the code below should run the entire simulation!!
 #=========================================================
-# phase_one #8 eliminations
-# @merge_tribe = @borneo.merge("Cello") # After 8 eliminations, merge the two tribes together
-# phase_two #3 more eliminations
-# @jury = Jury.new
-# phase_three #7 elminiations become jury members
-# finalists = @merge_tribe.members #set finalists
-# vote_results = @jury.cast_votes(finalists) #Jury members report votes
-# @jury.report_votes(vote_results) #Jury announces their votes
-# @jury.announce_winner(vote_results) #Jury announces final winner
+phase_one #8 eliminations
+puts "Merging the Teams".cyan
+puts "New Tribe is...".cyan
+@merge_tribe = @borneo.merge("Cello") # After 8 eliminations, merge the two tribes together
+phase_two #3 more eliminations
+@jury = Jury.new
+phase_three #7 elminiations become jury members
+finalists = @merge_tribe.members #set finalists
+puts "Juries begin voting".light_blue
+vote_results = @jury.cast_votes(finalists) #Jury members report votes
+@jury.report_votes(vote_results) #Jury announces their votes
+@jury.announce_winner(vote_results) #Jury announces final winner

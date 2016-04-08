@@ -1,0 +1,21 @@
+GIT
+  remote: https://github.com/sadysnaat/colorizr.git
+  revision: 4739470afedac579bbaf56fd584e0ec5aa9d8250
+  branch: master
+  specs:
+    colorizr (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    terminal-table (1.5.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  colorizr!
+  terminal-table (= 1.5.2)
+
+BUNDLED WITH
+   1.11.2

@@ -16,21 +16,23 @@ class Jury
       votes[finalist] = 0
     end
     @members.each do |member|
-      vote = finalists.sample
-      votes[vote] += 1
-      puts vote
+      finalist = finalists.sample
+      votes[finalist] += 1
+      puts "#{member} votes for #{finalist} [#{votes[finalist]}]"
     end
     return votes
   end
 
   def report_votes(final_votes)
     final_votes.each do |finalist, votes|
-      puts "#{finalist} got #{votes}"
+      puts "#{finalist} got #{votes} votes."
     end
   end
 
   def announce_winner(final_votes)
-    winner = final_votes.values.max
-    final_votes.key(winner)
+    winnin_score = final_votes.values.max
+    winner = final_votes.key(winnin_score)
+    puts "#{winner} has survived.🎉".light_red
+    return winner
   end
 end

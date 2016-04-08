@@ -28,4 +28,10 @@ class Game
   def individual_immunity_challenge
     @tribes.sample.members.sample
   end
+
+  def print_tribes
+    @tribes.each do |tribe|
+      tribe.print_tribe
+    end
+  end
 end
