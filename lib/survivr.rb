@@ -49,12 +49,12 @@ def play_challenges(options={})
   options[:number].times do |i|
     puts "Challenge #{i+1}"
     if options[:opponents] == "tribes"
-      losing_tribe = @borneo.immunity_challenge#tribes.sample
+      losing_tribe = @borneo.immunity_challenge
       puts "#{losing_tribe} has lost.".light_red
       eliminated << losing_tribe.tribal_council
       @borneo.print_tribes
     elsif options[:opponents] == "individuals"
-      immune = @borneo.individual_immunity_challenge#@merge_tribe.members.sample
+      immune = @borneo.individual_immunity_challenge
       puts "#{immune.to_s.green} is immune for this round."
       eliminated << @merge_tribe.tribal_council(immune: immune)
       @merge_tribe.print_tribe
