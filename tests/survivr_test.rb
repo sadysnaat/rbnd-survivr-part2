@@ -30,7 +30,7 @@ class TestSurvivr < Minitest::Test
   def test_phase_two
     assert_equal 3, phase_two
   end
-  
+
   def test_phase_three
     assert_equal 7, phase_three
   end

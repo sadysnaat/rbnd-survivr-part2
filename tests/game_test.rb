@@ -1,4 +1,6 @@
 require 'minitest/autorun'
+require 'terminal-table'
+require 'colorizr'
 require_relative "../lib/game"
 require_relative "../lib/tribe"
 require_relative "../lib/contestant"
@@ -20,7 +22,7 @@ class TestGame < Minitest::Test
   def test_tribes_is_array
     assert_kind_of Array, @borneo.tribes
   end
-  
+
   def test_add_tribe
     contestants = ["person_one", "person_two"]
     contestants.map!{ |contestant| Contestant.new(contestant) }

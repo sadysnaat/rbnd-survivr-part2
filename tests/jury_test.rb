@@ -1,4 +1,5 @@
 require 'minitest/autorun'
+require 'colorizr'
 require_relative "../lib/contestant"
 require_relative "../lib/jury"
 
@@ -23,7 +24,7 @@ class TestJury < Minitest::Test
     jury = Jury.new
     assert_empty jury.members
   end
-  
+
   def test_cast_votes_returns_hash
     assert_kind_of Hash, @jury.cast_votes(@finalists)
   end
